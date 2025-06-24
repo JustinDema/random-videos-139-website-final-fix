@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' - ' + ${channelName}">Videos - Random Videos 139</title>
+    <meta name="description" th:content="${pageDescription}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/videos.css}">
+</head>
+<body class="dark-mode">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+            <i class="fas fa-sun light-icon"></i>
+            <i class="fas fa-moon dark-icon"></i>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navigation">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img th:src="@{/images/logo.png}" alt="Random Videos 139 Logo" class="nav-logo">
+                <span class="nav-title" th:text="${channelName}">Random Videos 139</span>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/latest-videos" class="nav-link" th:classappend="${pageTitle == 'Latest Videos'} ? 'active' : ''">
+                    <i class="fas fa-clock"></i>
+                    <span>Latest Videos</span>
+                </a>
+                <a href="/popular-videos" class="nav-link" th:classappend="${pageTitle == 'Most Popular Videos'} ? 'active' : ''">
+                    <i class="fas fa-fire"></i>
+                    <span>Popular</span>
+                </a>
+                <a th:href="${channelUrl}" class="nav-link youtube-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title" th:text="${pageTitle}">Latest Videos</h1>
+            <p class="page-description" th:text="${pageDescription}">Check out our newest AI character songs!</p>
+        </header>
+
+        <!-- Videos Grid -->
+        <main class="videos-main">
+            <div class="videos-grid">
+                <div class="video-card" th:each="video : ${videos}">
+                    <div class="video-thumbnail">
+                        <img th:src="${video.thumbnailUrl != null ? video.thumbnailUrl : '/images/placeholder-video.jpg'}" 
+                             th:alt="${video.title}" 
+                             class="thumbnail-image">
+                        <div class="video-duration" th:if="${video.duration != null}" th:text="${video.duration}">3:45</div>
+                        <div class="video-overlay">
+                            <a th:href="${video.youTubeUrl}" class="play-button" target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title" th:text="${video.title}">Video Title</h3>
+                        <p class="video-description" th:text="${video.shortDescription}">Video description...</p>
+                        <div class="video-meta">
+                            <span class="video-views" th:text="${video.formattedViewCount} + ' views'">0 views</span>
+                            <span class="video-date" th:text="${video.timeAgo}">Unknown</span>
+                            <span class="video-likes" th:if="${video.likeCount != null}">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span th:text="${video.likeCount}">0</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <h2>Want More?</h2>
+            <p>Subscribe to our YouTube channel for daily AI character songs!</p>
+            <a th:href="${channelUrl}" class="cta-button" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-youtube"></i>
+                Subscribe on YouTube
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 Random Videos 139. All rights reserved.</p>
+            <p>Daily uploads at 8:00 PM (Berlin Time) | Germany</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/script.js}"></script>
+</body>
+</html>
+

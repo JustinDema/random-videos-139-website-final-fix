@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${channelName} + ' - Official Website'">Random Videos 139 - Official Website</title>
+    <meta name="description" content="Official website for Random Videos 139 YouTube channel - Daily AI Character Songs">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="dark-mode">
+    <!-- Navigation Bar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+            <i class="fas fa-sun light-icon"></i>
+            <i class="fas fa-moon dark-icon"></i>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo-container">
+                <img th:src="@{/images/logo.png}" alt="Random Videos 139 Logo" class="logo">
+            </div>
+            <h1 class="channel-title" th:text="${channelName}">Random Videos 139</h1>
+            <p class="channel-handle" th:text="${channelHandle}">@randomvideos1392</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${subscribers}">1.96K</span>
+                    <span class="stat-label">Subscribers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${videos}">407</span>
+                    <span class="stat-label">Videos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" th:text="${views}">1,261,315</span>
+                    <span class="stat-label">Views</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Featured Videos Carousel Section -->
+            <section class="featured-section" th:if="${featuredVideos != null and !featuredVideos.isEmpty()}">
+                <div class="section-header">
+                    <h2><i class="fas fa-star"></i> Featured Videos</h2>
+                </div>
+                <div class="swiper featured-carousel">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="video : ${featuredVideos}">
+                            <div class="featured-video-card">
+                                <div class="featured-video-thumbnail">
+                                    <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" loading="lazy">
+                                    <div class="featured-video-overlay">
+                                        <a th:href="@{'/video/' + ${video.videoId}}" class="featured-play-btn">
+                                            <i class="fas fa-play"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="featured-video-info">
+                                    <h3 class="featured-video-title" th:text="${video.title}">Video Title</h3>
+                                    <div class="featured-video-meta">
+                                        <span class="featured-video-views" th:text="${video.formattedViewCount} + ' views'">1.2K views</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </section>
+
+            <!-- Latest Videos Section -->
+            <section class="videos-section" th:if="${latestVideos != null and !latestVideos.isEmpty()}">
+                <div class="section-header">
+                    <h2><i class="fas fa-clock"></i> Latest Videos</h2>
+                    <a href="/latest-videos" class="view-all-btn">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="videos-grid">
+                    <div class="video-card" th:each="video : ${latestVideos}">
+                        <div class="video-thumbnail">
+                            <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" loading="lazy">
+                            <div class="video-duration" th:if="${video.duration}" th:text="${video.duration}">3:45</div>
+                            <div class="video-overlay">
+                                <a th:href="@{'/video/' + ${video.videoId}}" class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title" th:text="${video.title}">Video Title</h3>
+                            <div class="video-meta">
+                                <span class="video-views" th:text="${video.formattedViewCount} + ' views'">1.2K views</span>
+                                <span class="video-likes" th:if="${video.likeCount != null}" th:text="${video.formattedLikeCount} + ' likes'">50 likes</span>
+                                <span class="video-date" th:text="${video.timeAgo}">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular Videos Section -->
+            <section class="videos-section" th:if="${popularVideos != null and !popularVideos.isEmpty()}">
+                <div class="section-header">
+                    <h2><i class="fas fa-fire"></i> Most Popular</h2>
+                    <a href="/popular" class="view-all-btn">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="videos-grid">
+                    <div class="video-card" th:each="video : ${popularVideos}">
+                        <div class="video-thumbnail">
+                            <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" loading="lazy">
+                            <div class="video-duration" th:if="${video.duration}" th:text="${video.duration}">3:45</div>
+                            <div class="video-overlay">
+                                <a th:href="@{'/video/' + ${video.videoId}}" class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title" th:text="${video.title}">Video Title</h3>
+                            <div class="video-meta">
+                                <span class="video-views" th:text="${video.formattedViewCount} + ' views'">1.2K views</span>
+                                <span class="video-likes" th:if="${video.likeCount != null}" th:text="${video.formattedLikeCount} + ' likes'">50 likes</span>
+                                <span class="video-date" th:text="${video.timeAgo}">2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Playlists Section -->
+            <section class="playlists-section" th:if="${playlists != null and !playlists.isEmpty()}">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Featured Playlists</h2>
+                    <a href="/playlists" class="view-all-btn">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="playlists-grid">
+                    <div class="playlist-card" th:each="playlist : ${playlists}">
+                        <div class="playlist-thumbnail">
+                            <img th:src="${playlist.thumbnailUrl}" th:alt="${playlist.title}" loading="lazy">
+                            <div class="playlist-count" th:text="${playlist.formattedItemCount}">12 videos</div>
+                            <div class="playlist-overlay">
+                                <a th:href="${playlist.youTubeUrl}" target="_blank" rel="noopener noreferrer" class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="playlist-info">
+                            <h3 class="playlist-title" th:text="${playlist.title}">Playlist Title</h3>
+                            <p class="playlist-description" th:text="${playlist.shortDescription}">Playlist description</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Description Section -->
+            <section class="description-section">
+                <h2>About the Channel</h2>
+                <p class="description" th:text="${description}">Daily AI Character Songs - New uploads at 8:00 PM (Berlin Time)</p>
+                
+                <div class="features">
+                    <h3>Creating Unique Character Songs Using:</h3>
+                    <ul class="features-list">
+                        <li><i class="fas fa-brain"></i> Character Analysis from Wikis</li>
+                        <li><i class="fas fa-trending-up"></i> Social Media Trends</li>
+                        <li><i class="fas fa-laugh"></i> Popular Memes</li>
+                        <li><i class="fas fa-microphone"></i> AI Voice Generation</li>
+                        <li><i class="fas fa-music"></i> Custom Music Production</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-section">
+                <h2>Watch Our Videos</h2>
+                <p>Join our growing community of character music enthusiasts!</p>
+                <div class="cta-buttons">
+                    <a th:href="${channelUrl}" class="cta-button primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-youtube"></i>
+                        Visit YouTube Channel
+                    </a>
+                    <a href="/latest-videos" class="cta-button secondary">
+                        <i class="fas fa-clock"></i>
+                        Latest Videos
+                    </a>
+                    <a href="/popular" class="cta-button secondary">
+                        <i class="fas fa-fire"></i>
+                        Popular Videos
+                    </a>
+                </div>
+                <p class="cta-subtitle">🎵 Daily uploads 🌟 Character requests welcome</p>
+            </section>
+
+            <!-- Tags Section -->
+            <section class="tags-section">
+                <h2>Tags</h2>
+                <div class="tags">
+                    <span class="tag">#AISongs</span>
+                    <span class="tag">#AnimeMusic</span>
+                    <span class="tag">#VocalSynthesis</span>
+                    <span class="tag">#AIVoice</span>
+                    <span class="tag">#AnimeCovers</span>
+                    <span class="tag">#VirtualArtist</span>
+                    <span class="tag">#GameMusic</span>
+                    <span class="tag">#MangaMusic</span>
+                    <span class="tag">#AICreator</span>
+                    <span class="tag">#CharacterSongs</span>
+                    <span class="tag">#AnimeCommunity</span>
+                    <span class="tag">#RandomVideos139</span>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <p>© 2024 Random Videos 139. All rights reserved.</p>
+                    <p>Joined YouTube: <span th:text="${joinDate}">Apr 21, 2022</span> | Germany</p>
+                </div>
+                <div class="footer-section" th:if="${lastUpdateTime}">
+                    <p class="update-info">
+                        <i class="fas fa-sync-alt"></i>
+                        Last updated: <span th:text="${#temporals.format(lastUpdateTime, 'MMM dd, yyyy HH:mm')}">Dec 15, 2024 14:30</span>
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <div class="api-status" th:classappend="${apiConnected} ? 'connected' : 'disconnected'">
+                        <i class="fas fa-circle"></i>
+                        <span th:text="${apiConnected} ? 'API Connected' : 'API Disconnected'">API Status</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+</body>
+</html>
+
