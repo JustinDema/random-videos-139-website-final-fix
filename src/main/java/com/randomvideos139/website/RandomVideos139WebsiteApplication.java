@@ -17,12 +17,12 @@ public class RandomVideos139WebsiteApplication {
     }
 
     @Bean
-    public CommandLineRunner initData(DataSyncService dataSyncService, ChannelStatsRepository channelStatsRepository) {
+    public CommandLineRunner initData(DataSyncService dataSyncService) {
         return args -> {
-            if (channelStatsRepository.count() == 0) {
-                // Only sync if database is empty
-                dataSyncService.syncAllData();
-            }
+            // Always trigger a full data sync on startup for development and testing.
+            System.out.println("Triggering initial data sync on startup...");
+            dataSyncService.syncAllData();
+            System.out.println("Initial data sync completed.");
         };
     }
 }
