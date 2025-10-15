@@ -1,3 +1,4 @@
+
 package com.randomvideos139.website.controller;
 
 import com.randomvideos139.website.entity.ChannelStats;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -208,6 +210,26 @@ public class HomeController {
     }
 
     /**
+     * Video detail page
+     */
+    @GetMapping("/video/{videoId}")
+    public String videoDetail(@PathVariable String videoId, Model model) {
+        addCommonAttributes(model);
+        
+        Optional<Video> videoOptional = dataSyncService.getVideoRepository().findById(videoId);
+        
+        if (videoOptional.isPresent()) {
+            Video video = videoOptional.get();
+            model.addAttribute("video", video);
+            model.addAttribute("pageTitle", video.getTitle());
+            //model.addAttribute("pageDescription", video.getShortDescription());
+            return "video-detail";
+        } else {
+            return "redirect:/all-videos";
+        }
+    }
+
+    /**
      * Add common attributes to all pages
      */
     private void addCommonAttributes(Model model) {
@@ -225,4 +247,3 @@ public class HomeController {
         model.addAttribute("apiConnected", apiConnected);
     }
 }
-
