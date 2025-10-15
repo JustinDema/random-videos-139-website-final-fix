@@ -104,7 +104,8 @@ public class HomeController {
         model.addAttribute("totalElements", videosPage.getTotalElements());
         model.addAttribute("hasNext", videosPage.hasNext());
         model.addAttribute("hasPrevious", videosPage.hasPrevious());
-        
+        model.addAttribute("currentPage", page);
+
         return "latest-videos";
     }
 
@@ -127,7 +128,8 @@ public class HomeController {
         model.addAttribute("totalElements", videosPage.getTotalElements());
         model.addAttribute("hasNext", videosPage.hasNext());
         model.addAttribute("hasPrevious", videosPage.hasPrevious());
-        
+        model.addAttribute("currentPage", page);
+
         return "popular-videos";
     }
 
@@ -180,7 +182,7 @@ public class HomeController {
         
         List<Playlist> playlists = dataSyncService.getPlaylists();
         model.addAttribute("playlists", playlists);
-        
+
         return "playlists";
     }
 
@@ -188,7 +190,7 @@ public class HomeController {
      * About page
      */
     @GetMapping("/about")
-    public String about(Model model) {
+    public String about(Model model, @RequestParam(defaultValue = "0") int page) {
         addCommonAttributes(model);
         
         model.addAttribute("pageTitle", "About Me");
@@ -200,7 +202,8 @@ public class HomeController {
         model.addAttribute("favoriteAnime", "Code Geass");
         model.addAttribute("favoriteManga", "One Piece");
         model.addAttribute("channelHeritage", "139 pays tribute to Attack on Titan Ch. 139");
-        
+        model.addAttribute("currentPage", page);
+
         return "about";
     }
 
