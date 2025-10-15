@@ -15,35 +15,32 @@
     <div class="container">
         <header class="page-header">
             <h1>About The Channel</h1>
-            <p>Learn more about Random Videos 139 and its creator</p>
+            <p>The story behind Random Videos 139</p>
         </header>
 
         <main class="main-content about-page">
             <section class="about-section">
                 <div class="about-card">
-                    <div class="about-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
+                    <div class="about-icon"><i class="fas fa-user-astronaut"></i></div>
                     <div class="about-content">
-                        <h2 class="about-title">The Mission</h2>
+                        <h2 class="about-title">The Creator</h2>
                         <p class="about-text">
-                            Random Videos 139 is a passion project dedicated to creating unique and entertaining AI-generated character songs. 
-                            By combining cutting-edge AI technology with a deep love for anime and gaming, we bring your favorite characters to life through music.
+                            Hi, I'm <strong>Justin</strong>, the creator of Random Videos 139. As an avid anime fan (Code Geass is my favorite!) and manga reader (One Piece for life!), I started this channel as a passion project to merge my love for storytelling with cutting-edge AI technology.
+                        </p>
+                        <p class="about-text">
+                            The '139' in the channel name is a tribute to the final chapter of Attack on Titan, a series that left a lasting impact on me. This channel is my way of paying homage to the incredible worlds and characters that inspire me.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <section class="creator-section">
+            <section class="about-section">
                 <div class="about-card">
-                    <div class="about-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <div class="about-icon"><i class="fas fa-rocket"></i></div>
                     <div class="about-content">
-                        <h2 class="about-title">The Creator</h2>
+                        <h2 class="about-title">The Mission</h2>
                         <p class="about-text">
-                            Hi, I'm Justin, the creator of Random Videos 139. As an avid anime and manga enthusiast, I wanted to create a space where fans could experience their favorite characters in a new and exciting way. 
-                            This channel is a fusion of my passions for technology and storytelling, and I hope you enjoy the music as much as I enjoy making it.
+                            Our mission is to bring your favorite anime and manga characters to life through unique, AI-generated character songs. We aim to create a community where fans can celebrate their favorite stories and discover new music in a fun and innovative way.
                         </p>
                     </div>
                 </div>
@@ -51,13 +48,16 @@
 
             <section class="social-media-section">
                 <div class="section-header">
-                    <h2>Follow Us</h2>
+                    <h2>Follow My Journey</h2>
                 </div>
-                <div class="social-links-container">
-                    <a th:href="${socialLinks.youtube}" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-                    <a th:href="${socialLinks.twitter}" class="social-link twitter" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
-                    <a th:href="${socialLinks.instagram}" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                    <a th:href="${socialLinks.facebook}" class="social-link facebook" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+                <div class="social-links-grid" th:if="${socialLinks}">
+                    <a th:href="${socialLinks.get('youtube')}" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i> <span>YouTube</span></a>
+                    <a th:href="${socialLinks.get('twitter')}" class="social-link twitter" target="_blank"><i class="fab fa-twitter"></i> <span>Twitter</span></a>
+                    <a th:href="${socialLinks.get('instagram')}" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i> <span>Instagram</span></a>
+                    <a th:href="${socialLinks.get('facebook')}" class="social-link facebook" target="_blank"><i class="fab fa-facebook"></i> <span>Facebook</span></a>
+                    <a th:href="${socialLinks.get('tiktok')}" class="social-link tiktok" target="_blank"><i class="fab fa-tiktok"></i> <span>TikTok</span></a>
+                    <a th:href="${socialLinks.get('reddit')}" class="social-link reddit" target="_blank"><i class="fab fa-reddit"></i> <span>Reddit</span></a>
+                    <a th:href="${socialLinks.get('tumblr')}" class="social-link tumblr" target="_blank"><i class="fab fa-tumblr"></i> <span>Tumblr</span></a>
                 </div>
             </section>
         </main>

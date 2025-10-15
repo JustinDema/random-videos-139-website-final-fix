@@ -19,50 +19,57 @@
         </header>
 
         <div class="search-and-filter-bar">
-            <form th:action="@{/all-videos}" method="get" class="search-form">
+            <form th:action="@{/videos}" method="get" class="search-form">
                 <input type="text" name="search" placeholder="Search for videos..." th:value="${search}">
                 <button type="submit"><i class="fas fa-search"></i></button>
             </form>
 
-            <div class="filter-options">
-                <label for="sort">Sort by:</label>
-                <select id="sort" name="sort" onchange="this.form.submit()">
-                    <option value="publishedAt,desc" th:selected="${sort == 'publishedAt,desc'}">Newest</option>
-                    <option value="publishedAt,asc" th:selected="${sort == 'publishedAt,asc'}">Oldest</option>
-                    <option value="viewCount,desc" th:selected="${sort == 'viewCount,desc'}">Most Popular</option>
-                </select>
-            </div>
+            <form th:action="@{/videos}" method="get" id="sortForm">
+                <input type="hidden" name="search" th:value="${search}"/>
+                <div class="filter-options">
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" name="sortBy" onchange="document.getElementById('sortForm').submit()">
+                        <option value="publishedAt" th:selected="${videos.sort.getOrderFor('publishedAt') != null}">Date</option>
+                        <option value="viewCount" th:selected="${videos.sort.getOrderFor('viewCount') != null}">Views</option>
+                        <option value="title" th:selected="${videos.sort.getOrderFor('title') != null}">Title</option>
+                    </select>
+                    <select name="sortDir" onchange="document.getElementById('sortForm').submit()">
+                        <option value="desc" th:selected="${videos.sort.getOrderFor('publishedAt') != null && videos.sort.getOrderFor('publishedAt').direction.name() == 'DESC'}">Descending</option>
+                        <option value="asc" th:selected="${videos.sort.getOrderFor('publishedAt') != null && videos.sort.getOrderFor('publishedAt').direction.name() == 'ASC'}">Ascending</option>
+                    </select>
+                </div>
+            </form>
         </div>
 
-        <div class="videos-grid" th:if="${!videos.isEmpty()}">
-            <div class="video-card" th:each="video : ${videos}">
-                <a th:href="@{'/video/' + ${video.videoId}}">
+        <div class="videos-grid" th:if="${!videos.empty}">
+            <div class="video-card" th:each="video : ${videos.content}">
+                <a th:href="@{'/videos/' + ${video.videoId}}">
                     <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" class="video-thumbnail">
                 </a>
                 <div class="video-info">
                     <h3 class="video-title" th:text="${video.title}"></h3>
                     <div class="video-meta">
-                        <span th:text="${video.formattedViewCount} + ' views'"></span>
-                        <span th:text="${video.timeAgo}"></span>
+                        <span th:text="${#numbers.formatDecimal(video.viewCount, 0, 'COMMA', 0, 'POINT')} + ' views'"></span>
+                        <span th:text="${#dates.format(video.publishedAt, 'MMM dd, yyyy')}"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="no-videos" th:if="${videos.isEmpty()}">
+        <div class="no-videos" th:if="${videos.empty}">
             <p>No videos found.</p>
         </div>
 
         <nav class="pagination" th:if="${videos.totalPages > 1}">
             <ul>
                 <li th:if="${videos.hasPrevious()}">
-                    <a th:href="@{/all-videos(page=${videos.number-1}, sort=${sort}, search=${search})}">Previous</a>
+                    <a th:href="@{/videos(page=${videos.number-1}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">Previous</a>
                 </li>
-                <li th:each="i : ${#numbers.sequence(0, videos.totalPages - 1)}">
-                    <a th:href="@{/all-videos(page=${i}, sort=${sort}, search=${search})}" th:text="${i+1}" th:classappend="${i == videos.number} ? 'active'"></a>
+                <li th:each="i : ${#numbers.sequence(0, videos.totalPages - 1)}" th:class="${i == videos.number} ? 'active' : ''">
+                    <a th:href="@{/videos(page=${i}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}" th:text="${i+1}"></a>
                 </li>
                 <li th:if="${videos.hasNext()}">
-                    <a th:href="@{/all-videos(page=${videos.number+1}, sort=${sort}, search=${search})}">Next</a>
+                    <a th:href="@{/videos(page=${videos.number+1}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}">Next</a>
                 </li>
             </ul>
         </nav>
