@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -5,114 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <!-- Navigation Bar Fragment -->
     <nav th:fragment="navbar" class="navbar">
-        <div class="navbar-container">
-            <!-- Logo and Brand -->
-            <div class="navbar-brand">
-                <a href="/" class="brand-link">
-                    <img src="/images/logo.png" alt="Random Videos 139" class="logo">
-                    <span class="brand-text">Random Videos 139</span>
-                </a>
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img th:src="@{/images/logo.png}" alt="Random Videos 139 Logo" class="nav-logo-img">
+                <span class="nav-logo-text">Random Videos 139</span>
+            </a>
+
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="/latest-videos" class="nav-link"><i class="fas fa-clock"></i> Latest</a>
+                <a href="/popular-videos" class="nav-link"><i class="fas fa-fire"></i> Popular</a>
+                <a href="/all-videos" class="nav-link
+                "><i class="fas fa-video"></i> All Videos</a>
+                <a href="/playlists" class="nav-link"><i class="fas fa-list"></i> Playlists</a>
+                <a href="/about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
             </div>
-            
-            <!-- Navigation Menu -->
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a href="/" class="nav-link" 
-                           th:classappend="${activePage == 'home'} ? 'active' : ''">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/popular-videos" class="nav-link" 
-                           th:classappend="${activePage == 'popular'} ? 'active' : ''">
-                            <i class="fas fa-fire"></i>
-                            <span>Popular</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/all-videos" class="nav-link" 
-                           th:classappend="${activePage == 'all-videos'} ? 'active' : ''">
-                            <i class="fas fa-video"></i>
-                            <span>All Videos</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/playlists" class="nav-link" 
-                           th:classappend="${activePage == 'playlists'} ? 'active' : ''">
-                            <i class="fas fa-list"></i>
-                            <span>Playlists</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/about" class="nav-link" 
-                           th:classappend="${activePage == 'about'} ? 'active' : ''">
-                            <i class="fas fa-info-circle"></i>
-                            <span>About</span>
-                        </a>
-                    </li>
-                </ul>
+
+            <div class="nav-toggle" id="navToggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
-            
-            <!-- Theme Toggle and Mobile Menu Button -->
-            <div class="navbar-controls">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                </button>
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                    <span class="hamburger-line"></span>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu Overlay -->
-        <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-            <div class="mobile-menu-content">
-                <ul class="mobile-nav">
-                    <li class="mobile-nav-item">
-                        <a href="/" class="mobile-nav-link" 
-                           th:classappend="${activePage == 'home'} ? 'active' : ''">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li class="mobile-nav-item">
-                        <a href="/popular-videos" class="mobile-nav-link" 
-                           th:classappend="${activePage == 'popular'} ? 'active' : ''">
-                            <i class="fas fa-fire"></i>
-                            <span>Popular</span>
-                        </a>
-                    </li>
-                    <li class="mobile-nav-item">
-                        <a href="/all-videos" class="mobile-nav-link" 
-                           th:classappend="${activePage == 'all-videos'} ? 'active' : ''">
-                            <i class="fas fa-video"></i>
-                            <span>All Videos</span>
-                        </a>
-                    </li>
-                    <li class="mobile-nav-item">
-                        <a href="/playlists" class="mobile-nav-link" 
-                           th:classappend="${activePage == 'playlists'} ? 'active' : ''">
-                            <i class="fas fa-list"></i>
-                            <span>Playlists</span>
-                        </a>
-                    </li>
-                    <li class="mobile-nav-item">
-                        <a href="/about" class="mobile-nav-link" 
-                           th:classappend="${activePage == 'about'} ? 'active' : ''">
-                            <i class="fas fa-info-circle"></i>
-                            <span>About</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
+            <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+            </button>
         </div>
     </nav>
 </body>
 </html>
-

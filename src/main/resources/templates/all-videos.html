@@ -1,292 +1,77 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Videos - Random Videos 139</title>
-    <meta name="description" content="Browse all videos from Random Videos 139 YouTube channel">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body class="dark-mode">
-    <!-- Navigation Bar -->
+<body>
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Theme Toggle -->
-    <div class="theme-toggle">
-        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle theme">
-            <i class="fas fa-sun light-icon"></i>
-            <i class="fas fa-moon dark-icon"></i>
-        </button>
-    </div>
-
-    <!-- Main Container -->
     <div class="container">
-        <!-- Header Section -->
         <header class="page-header">
-            <div class="page-header-content">
-                <h1><i class="fas fa-video"></i> All Videos</h1>
-                <p>Browse all <span th:text="${totalElements}">407</span> videos from Random Videos 139</p>
-            </div>
+            <h1>All Videos</h1>
+            <p>Browse all videos from Random Videos 139</p>
         </header>
 
-        <!-- Search and Filter Section -->
-        <section class="search-filter-section">
-            <div class="search-filter-container">
-                <!-- Search Bar -->
-                <div class="search-bar">
-                    <form method="get" action="/all-videos" class="search-form">
-                        <div class="search-input-group">
-                            <input type="text" 
-                                   name="search" 
-                                   th:value="${search}"
-                                   placeholder="Search videos by title..." 
-                                   class="search-input"
-                                   id="searchInput">
-                            <button type="submit" class="search-btn">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                        
-                        <!-- Hidden inputs to preserve other parameters -->
-                        <input type="hidden" name="sortBy" th:value="${sortBy}">
-                        <input type="hidden" name="sortDir" th:value="${sortDir}">
-                        <input type="hidden" name="page" value="0">
-                    </form>
-                </div>
+        <div class="search-and-filter-bar">
+            <form th:action="@{/all-videos}" method="get" class="search-form">
+                <input type="text" name="search" placeholder="Search for videos..." th:value="${search}">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
 
-                <!-- Filter Controls -->
-                <div class="filter-controls">
-                    <div class="sort-controls">
-                        <label for="sortSelect">Sort by:</label>
-                        <select id="sortSelect" class="sort-select">
-                            <option value="publishedAt-desc" th:selected="${sortBy == 'publishedAt' and sortDir == 'desc'}">Newest First</option>
-                            <option value="publishedAt-asc" th:selected="${sortBy == 'publishedAt' and sortDir == 'asc'}">Oldest First</option>
-                            <option value="viewCount-desc" th:selected="${sortBy == 'viewCount' and sortDir == 'desc'}">Most Views</option>
-                            <option value="viewCount-asc" th:selected="${sortBy == 'viewCount' and sortDir == 'asc'}">Least Views</option>
-                            <option value="likeCount-desc" th:selected="${sortBy == 'likeCount' and sortDir == 'desc'}">Most Likes</option>
-                            <option value="title-asc" th:selected="${sortBy == 'title' and sortDir == 'asc'}">Title A-Z</option>
-                            <option value="title-desc" th:selected="${sortBy == 'title' and sortDir == 'desc'}">Title Z-A</option>
-                        </select>
-                    </div>
-                    
-                    <div class="view-controls">
-                        <button class="view-btn active" data-view="grid" title="Grid View">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button class="view-btn" data-view="list" title="List View">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="filter-options">
+                <label for="sort">Sort by:</label>
+                <select id="sort" name="sort" onchange="this.form.submit()">
+                    <option value="publishedAt,desc" th:selected="${sort == 'publishedAt,desc'}">Newest</option>
+                    <option value="publishedAt,asc" th:selected="${sort == 'publishedAt,asc'}">Oldest</option>
+                    <option value="viewCount,desc" th:selected="${sort == 'viewCount,desc'}">Most Popular</option>
+                </select>
+            </div>
+        </div>
 
-                <!-- Clear Search -->
-                <div class="search-info" th:if="${search != null and !search.isEmpty()}">
-                    <span class="search-results">
-                        Showing results for "<strong th:text="${search}"></strong>" 
-                        (<span th:text="${totalElements}">0</span> videos found)
-                    </span>
-                    <a href="/all-videos" class="clear-search">
-                        <i class="fas fa-times"></i> Clear Search
-                    </a>
+        <div class="videos-grid" th:if="${!videos.isEmpty()}">
+            <div class="video-card" th:each="video : ${videos}">
+                <a th:href="@{'/video/' + ${video.videoId}}">
+                    <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" class="video-thumbnail">
+                </a>
+                <div class="video-info">
+                    <h3 class="video-title" th:text="${video.title}"></h3>
+                    <div class="video-meta">
+                        <span th:text="${video.formattedViewCount} + ' views'"></span>
+                        <span th:text="${video.timeAgo}"></span>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Videos Grid -->
-        <main class="main-content">
-            <section class="videos-section">
-                <div class="videos-container" id="videosContainer">
-                    <!-- Grid View -->
-                    <div class="videos-grid" id="gridView">
-                        <div class="video-card" th:each="video : ${videos}">
-                            <div class="video-thumbnail">
-                                <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" loading="lazy">
-                                <div class="video-duration" th:if="${video.duration}" th:text="${video.duration}">3:45</div>
-                                <div class="video-overlay">
-                                    <a th:href="@{'/video/' + ${video.videoId}}" class="play-btn">
-                                        <i class="fas fa-play"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title" th:text="${video.title}">Video Title</h3>
-                                <div class="video-meta">
-                                    <span class="video-views" th:text="${video.formattedViewCount} + ' views'">1.2K views</span>
-                                    <span class="video-likes" th:if="${video.likeCount != null}" th:text="${video.formattedLikeCount} + ' likes'">50 likes</span>
-                                    <span class="video-comments" th:if="${video.commentCount != null}" th:text="${video.formattedCommentCount} + ' comments'">10 comments</span>
-                                    <span class="video-date" th:text="${video.timeAgo}">2 days ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="no-videos" th:if="${videos.isEmpty()}">
+            <p>No videos found.</p>
+        </div>
 
-                    <!-- List View -->
-                    <div class="videos-list" id="listView" style="display: none;">
-                        <div class="video-list-item" th:each="video : ${videos}">
-                            <div class="video-thumbnail-small">
-                                <img th:src="${video.thumbnailUrl}" th:alt="${video.title}" loading="lazy">
-                                <div class="video-duration" th:if="${video.duration}" th:text="${video.duration}">3:45</div>
-                                <div class="video-overlay">
-                                    <a th:href="@{'/video/' + ${video.videoId}}" class="play-btn">
-                                        <i class="fas fa-play"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="video-details">
-                                <h3 class="video-title" th:text="${video.title}">Video Title</h3>
-                                <p class="video-description" th:text="${video.shortDescription}">Video description...</p>
-                                <div class="video-stats">
-                                    <span class="stat-item">
-                                        <i class="fas fa-eye"></i>
-                                        <span th:text="${video.formattedViewCount}">1.2K</span>
-                                    </span>
-                                    <span class="stat-item" th:if="${video.likeCount != null}">
-                                        <i class="fas fa-thumbs-up"></i>
-                                        <span th:text="${video.formattedLikeCount}">50</span>
-                                    </span>
-                                    <span class="stat-item" th:if="${video.commentCount != null}">
-                                        <i class="fas fa-comment"></i>
-                                        <span th:text="${video.formattedCommentCount}">10</span>
-                                    </span>
-                                    <span class="stat-item">
-                                        <i class="fas fa-calendar"></i>
-                                        <span th:text="${video.timeAgo}">2 days ago</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <nav class="pagination" th:if="${videos.totalPages > 1}">
+            <ul>
+                <li th:if="${videos.hasPrevious()}">
+                    <a th:href="@{/all-videos(page=${videos.number-1}, sort=${sort}, search=${search})}">Previous</a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, videos.totalPages - 1)}">
+                    <a th:href="@{/all-videos(page=${i}, sort=${sort}, search=${search})}" th:text="${i+1}" th:classappend="${i == videos.number} ? 'active'"></a>
+                </li>
+                <li th:if="${videos.hasNext()}">
+                    <a th:href="@{/all-videos(page=${videos.number+1}, sort=${sort}, search=${search})}">Next</a>
+                </li>
+            </ul>
+        </nav>
 
-                <!-- No Results Message -->
-                <div class="no-results" th:if="${videos.isEmpty()}">
-                    <div class="no-results-content">
-                        <i class="fas fa-search"></i>
-                        <h3>No videos found</h3>
-                        <p th:if="${search != null and !search.isEmpty()}">
-                            No videos match your search for "<strong th:text="${search}"></strong>".
-                        </p>
-                        <p th:unless="${search != null and !search.isEmpty()}">
-                            No videos are available at the moment.
-                        </p>
-                        <a href="/all-videos" class="btn-secondary" th:if="${search != null and !search.isEmpty()}">
-                            <i class="fas fa-arrow-left"></i> View All Videos
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Pagination -->
-            <nav class="pagination-nav" th:if="${totalPages > 1}">
-                <div class="pagination-info">
-                    <span>
-                        Showing <strong th:text="${currentPage * 12 + 1}">1</strong> to 
-                        <strong th:text="${#numbers.formatInteger((currentPage + 1) * 12 > totalElements ? totalElements : (currentPage + 1) * 12, 0)}">12</strong> 
-                        of <strong th:text="${totalElements}">407</strong> videos
-                    </span>
-                </div>
-                
-                <ul class="pagination">
-                    <!-- Previous Page -->
-                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                        <a class="page-link" th:if="${currentPage > 0}" 
-                           th:href="@{/all-videos(page=${currentPage - 1}, search=${search}, sortBy=${sortBy}, sortDir=${sortDir})}">
-                            <i class="fas fa-chevron-left"></i> Previous
-                        </a>
-                        <span class="page-link" th:unless="${currentPage > 0}">
-                            <i class="fas fa-chevron-left"></i> Previous
-                        </span>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" 
-                        th:if="${pageNum >= (currentPage - 2) and pageNum <= (currentPage + 2)}"
-                        th:classappend="${pageNum == currentPage} ? 'active'">
-                        <a class="page-link" th:if="${pageNum != currentPage}"
-                           th:href="@{/all-videos(page=${pageNum}, search=${search}, sortBy=${sortBy}, sortDir=${sortDir})}"
-                           th:text="${pageNum + 1}">1</a>
-                        <span class="page-link" th:if="${pageNum == currentPage}" th:text="${pageNum + 1}">1</span>
-                    </li>
-
-                    <!-- Next Page -->
-                    <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
-                        <a class="page-link" th:if="${currentPage < totalPages - 1}" 
-                           th:href="@{/all-videos(page=${currentPage + 1}, search=${search}, sortBy=${sortBy}, sortDir=${sortDir})}">
-                            Next <i class="fas fa-chevron-right"></i>
-                        </a>
-                        <span class="page-link" th:unless="${currentPage < totalPages - 1}">
-                            Next <i class="fas fa-chevron-right"></i>
-                        </span>
-                    </li>
-                </ul>
-            </nav>
-        </main>
-
-        <!-- Footer -->
         <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <p>© 2024 Random Videos 139. All rights reserved.</p>
-                    <p>Browse our complete collection of AI character songs</p>
-                </div>
-                <div class="footer-section">
-                    <div class="footer-links">
-                        <a href="/">Home</a>
-                        <a href="/popular-videos">Popular Videos</a>
-                        <a href="/playlists">Playlists</a>
-                        <a href="/about">About Me</a>
-                    </div>
-                </div>
-            </div>
+            <p>&copy; 2024 Random Videos 139. All rights reserved.</p>
         </footer>
     </div>
 
-    <!-- JavaScript -->
     <script th:src="@{/js/script.js}"></script>
-    <script>
-        // Sort functionality
-        document.getElementById('sortSelect').addEventListener('change', function() {
-            const value = this.value;
-            const [sortBy, sortDir] = value.split('-');
-            const url = new URL(window.location);
-            url.searchParams.set('sortBy', sortBy);
-            url.searchParams.set('sortDir', sortDir);
-            url.searchParams.set('page', '0');
-            window.location.href = url.toString();
-        });
-
-        // View toggle functionality
-        const viewButtons = document.querySelectorAll('.view-btn');
-        const gridView = document.getElementById('gridView');
-        const listView = document.getElementById('listView');
-
-        viewButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const view = this.dataset.view;
-                
-                // Update button states
-                viewButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Toggle views
-                if (view === 'grid') {
-                    gridView.style.display = 'grid';
-                    listView.style.display = 'none';
-                } else {
-                    gridView.style.display = 'none';
-                    listView.style.display = 'block';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
-

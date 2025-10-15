@@ -1,196 +1,47 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle} + ' - ' + ${channelName}">Playlists - Random Videos 139</title>
+    <title>Playlists - Random Videos 139</title>
+    <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/videos.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header Section -->
-        <section class="page-header">
-            <div class="container">
-                <div class="header-content">
-                    <h1 class="page-title" th:text="${pageTitle}">Playlists</h1>
-                    <p class="page-description" th:text="${pageDescription}">
-                        Explore our curated playlists featuring AI character songs organized by themes, anime series, and more!
-                    </p>
-                    
-                    <!-- API Status Indicator -->
-                    <div class="api-status" th:if="${apiConnected != null}">
-                        <span th:class="${apiConnected} ? 'status-connected' : 'status-disconnected'">
-                            <i th:class="${apiConnected} ? 'fas fa-wifi' : 'fas fa-wifi-slash'"></i>
-                            <span th:text="${apiConnected} ? 'Live Data Connected' : 'Using Cached Data'"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="container">
+        <header class="page-header">
+            <h1>Playlists</h1>
+            <p>Explore our curated playlists of AI character songs</p>
+        </header>
 
-        <!-- Playlists Grid -->
-        <section class="playlists-section">
-            <div class="container">
-                <div class="playlists-grid" th:if="${playlists != null and !playlists.isEmpty()}">
-                    <div class="playlist-card" th:each="playlist : ${playlists}">
-                        <div class="playlist-thumbnail">
-                            <img th:src="${playlist.thumbnailUrl != null ? playlist.thumbnailUrl : '/images/placeholder-playlist.jpg'}" 
-                                 th:alt="${playlist.title}" 
-                                 class="playlist-image">
-                            <div class="playlist-overlay">
-                                <div class="playlist-info">
-                                    <span class="playlist-count" th:text="${playlist.formattedItemCount ?: '0 videos'}">0 videos</span>
-                                    <i class="fas fa-list"></i>
-                                </div>
-                                <a th:href="'https://www.youtube.com/playlist?list=' + ${playlist.playlistId}" 
-                                   class="play-button" 
-                                   target="_blank" 
-                                   rel="noopener noreferrer"
-                                   th:title="'Watch ' + ${playlist.title} + ' on YouTube'">
-                                    <i class="fas fa-play"></i>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="playlist-details">
-                            <h3 class="playlist-title" th:text="${playlist.title}">Playlist Title</h3>
-                            <p class="playlist-description" th:text="${playlist.description != null ? (playlist.description.length() > 120 ? playlist.description.substring(0, 120) + '...' : playlist.description) : 'No description available'}">
-                                Playlist description goes here...
-                            </p>
-                            <div class="playlist-meta">
-                                <span class="playlist-date" th:if="${playlist.publishedAt != null}">
-                                    Created <span th:text="${#temporals.format(playlist.publishedAt, 'MMM dd, yyyy')}">Date</span>
-                                </span>
-                                <span class="playlist-privacy">
-                                    <i class="fas fa-globe"></i>
-                                    <span>Public</span>
-                                </span>
-                            </div>
-                        </div>
+        <div class="playlists-grid" th:if="${!playlists.isEmpty()}">
+            <div class="playlist-card" th:each="playlist : ${playlists}">
+                <a th:href="${playlist.youtubeUrl}" target="_blank" rel="noopener noreferrer">
+                    <img th:src="${playlist.thumbnailUrl}" th:alt="${playlist.title}" class="playlist-thumbnail">
+                </a>
+                <div class="playlist-info">
+                    <h3 class="playlist-title" th:text="${playlist.title}"></h3>
+                    <p class="playlist-description" th:text="${playlist.shortDescription}"></p>
+                    <div class="playlist-meta">
+                        <span th:text="${playlist.itemCount} + ' videos'"></span>
                     </div>
                 </div>
-                
-                <!-- Empty State -->
-                <div class="empty-state" th:if="${playlists == null or playlists.isEmpty()}">
-                    <div class="empty-content">
-                        <i class="fas fa-list-ul empty-icon"></i>
-                        <h3 class="empty-title">No Playlists Available</h3>
-                        <p class="empty-description">
-                            Playlists are being loaded from YouTube. Please check back in a few minutes, 
-                            or visit our <a th:href="${channelUrl}" target="_blank">YouTube channel</a> directly.
-                        </p>
-                        <div class="empty-actions">
-                            <a th:href="${channelUrl}" class="btn btn-primary" target="_blank">
-                                <i class="fab fa-youtube"></i>
-                                Visit YouTube Channel
-                            </a>
-                            <button onclick="location.reload()" class="btn btn-secondary">
-                                <i class="fas fa-refresh"></i>
-                                Refresh Page
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Playlists Section (if we have data) -->
-        <section class="featured-playlists" th:if="${playlists != null and playlists.size() > 3}">
-            <div class="container">
-                <h2 class="section-title">Featured Collections</h2>
-                <div class="featured-grid">
-                    <div class="featured-item" th:each="playlist, iterStat : ${playlists}" th:if="${iterStat.index < 3}">
-                        <div class="featured-content">
-                            <div class="featured-number" th:text="${iterStat.index + 1}">1</div>
-                            <div class="featured-info">
-                                <h4 th:text="${playlist.title}">Playlist Title</h4>
-                                <p th:text="${playlist.formattedItemCount ?: '0 videos'}">0 videos</p>
-                            </div>
-                            <a th:href="'https://www.youtube.com/playlist?list=' + ${playlist.playlistId}" class="featured-link" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Discover More AI Character Songs</h2>
-                    <p class="cta-description">
-                        Subscribe to our YouTube channel for daily uploads of unique AI-generated character songs 
-                        featuring your favorite anime and manga characters!
-                    </p>
-                    <div class="cta-buttons">
-                        <a th:href="${channelUrl}" class="btn btn-primary" target="_blank">
-                            <i class="fab fa-youtube"></i>
-                            Subscribe on YouTube
-                        </a>
-                        <a href="/latest-videos" class="btn btn-secondary">
-                            <i class="fas fa-clock"></i>
-                            Latest Videos
-                        </a>
-                        <a href="/popular-videos" class="btn btn-secondary">
-                            <i class="fas fa-fire"></i>
-                            Popular Videos
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Random Videos 139</h3>
-                    <p>Creating unique AI character songs daily. Join our community of anime music enthusiasts!</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/latest-videos">Latest Videos</a></li>
-                        <li><a href="/popular-videos">Popular Videos</a></li>
-                        <li><a href="/playlists">Playlists</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect With Us</h4>
-                    <div class="social-links">
-                        <a href="https://facebook.com/Random.Videos.139" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="https://instagram.com/random_videos_139" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://twitter.com/139Videos" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://reddit.com/user/AdriralSilverWolf" target="_blank"><i class="fab fa-reddit"></i></a>
-                        <a href="https://tiktok.com/@random.videos.139" target="_blank"><i class="fab fa-tiktok"></i></a>
-                        <a href="https://tumblr.com/randomvideos139" target="_blank"><i class="fab fa-tumblr"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 Random Videos 139. All rights reserved. | AI Music Creator: Justin</p>
             </div>
         </div>
-    </footer>
 
-    <script src="/js/script.js"></script>
+        <div class="no-videos" th:if="${playlists.isEmpty()}">
+            <p>No playlists found.</p>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2024 Random Videos 139. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
-

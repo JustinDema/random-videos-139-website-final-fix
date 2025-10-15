@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popular Videos - Random Videos 139</title>
+    <title>Latest Videos - Random Videos 139</title>
     <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -14,8 +14,8 @@
 
     <div class="container">
         <header class="page-header">
-            <h1>Popular Videos</h1>
-            <p>Our most-watched AI character songs</p>
+            <h1>Latest Videos</h1>
+            <p>The newest videos from Random Videos 139</p>
         </header>
 
         <div class="videos-grid" th:if="${!videos.isEmpty()}">
@@ -40,13 +40,13 @@
         <nav class="pagination" th:if="${videos.totalPages > 1}">
             <ul>
                 <li th:if="${videos.hasPrevious()}">
-                    <a th:href="@{/popular-videos(page=${videos.number-1})}">Previous</a>
+                    <a th:href="@{/latest-videos(page=${videos.number-1})}">Previous</a>
                 </li>
                 <li th:each="i : ${#numbers.sequence(0, videos.totalPages - 1)}">
-                    <a th:href="@{/popular-videos(page=${i})}" th:text="${i+1}" th:classappend="${i == videos.number} ? 'active'"></a>
+                    <a th:href="@{/latest-videos(page=${i})}" th:text="${i+1}" th:classappend="${i == videos.number} ? 'active'"></a>
                 </li>
                 <li th:if="${videos.hasNext()}">
-                    <a th:href="@{/popular-videos(page=${videos.number+1})}">Next</a>
+                    <a th:href="@{/latest-videos(page=${videos.number+1})}">Next</a>
                 </li>
             </ul>
         </nav>

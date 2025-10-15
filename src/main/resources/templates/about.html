@@ -1,236 +1,72 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${pageTitle} + ' - ' + ${channelName}">About Me - Random Videos 139</title>
+    <title>About - Random Videos 139</title>
+    <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/videos.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header Section -->
-        <section class="page-header">
-            <div class="container">
-                <div class="header-content">
-                    <h1 class="page-title" th:text="${pageTitle}">About Me</h1>
-                    <p class="page-description" th:text="${pageDescription}">
-                        Learn more about the creator of Random Videos 139.
-                    </p>
-                </div>
-            </div>
-        </section>
+    <div class="container">
+        <header class="page-header">
+            <h1>About The Channel</h1>
+            <p>Learn more about Random Videos 139 and its creator</p>
+        </header>
 
-        <!-- About Creator Section -->
-        <section class="creator-section">
-            <div class="container">
-                <div class="creator-card">
-                    <div class="creator-avatar">
-                        <i class="fas fa-user-circle"></i>
+        <main class="main-content about-page">
+            <section class="about-section">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-info-circle"></i>
                     </div>
-                    <div class="creator-info">
-                        <h2 th:text="${creatorName} + ' | ' + ${creatorTitle}">Justin | AI Music Creator</h2>
-                        <p class="creator-subtitle">🎌 Anime & Manga Enthusiast</p>
-                        
-                        <div class="creator-details">
-                            <div class="detail-item">
-                                <i class="fas fa-tv"></i>
-                                <span><strong>Favorite Anime:</strong> <span th:text="${favoriteAnime}">Code Geass</span></span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-book"></i>
-                                <span><strong>Favorite Manga:</strong> <span th:text="${favoriteManga}">One Piece</span></span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-landmark"></i>
-                                <span><strong>Channel Heritage:</strong> <span th:text="${channelHeritage}">139 pays tribute to Attack on Titan Ch. 139</span></span>
-                            </div>
-                        </div>
+                    <div class="about-content">
+                        <h2 class="about-title">The Mission</h2>
+                        <p class="about-text">
+                            Random Videos 139 is a passion project dedicated to creating unique and entertaining AI-generated character songs. 
+                            By combining cutting-edge AI technology with a deep love for anime and gaming, we bring your favorite characters to life through music.
+                        </p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Process Section -->
-        <section class="process-section">
-            <div class="container">
-                <h2>My Creative Process</h2>
-                <p class="process-description">
-                    Each song is crafted through deep character analysis and AI-powered voice synthesis, 
-                    bringing your favorite characters to life through music! 🎶
-                </p>
-                
-                <div class="process-steps">
-                    <div class="step-card">
-                        <div class="step-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h3>Character Analysis</h3>
-                        <p>Deep dive into character wikis to understand personality, backstory, and motivations</p>
+            <section class="creator-section">
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-user"></i>
                     </div>
-                    
-                    <div class="step-card">
-                        <div class="step-icon">
-                            <i class="fas fa-trending-up"></i>
-                        </div>
-                        <h3>Trend Research</h3>
-                        <p>Monitor social media trends and popular memes to create relevant content</p>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-icon">
-                            <i class="fas fa-microphone"></i>
-                        </div>
-                        <h3>AI Voice Generation</h3>
-                        <p>Use advanced AI technology to synthesize character voices with emotion</p>
-                    </div>
-                    
-                    <div class="step-card">
-                        <div class="step-icon">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <h3>Music Production</h3>
-                        <p>Compose and produce custom music that matches each character's essence</p>
+                    <div class="about-content">
+                        <h2 class="about-title">The Creator</h2>
+                        <p class="about-text">
+                            Hi, I'm Justin, the creator of Random Videos 139. As an avid anime and manga enthusiast, I wanted to create a space where fans could experience their favorite characters in a new and exciting way. 
+                            This channel is a fusion of my passions for technology and storytelling, and I hope you enjoy the music as much as I enjoy making it.
+                        </p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Channel Info Section -->
-        <section class="channel-info-section">
-            <div class="container">
-                <h2>Channel Information</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h3>Upload Schedule</h3>
-                        <p>Daily uploads at 8:00 PM (Berlin Time)</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-globe"></i>
-                        <h3>Location</h3>
-                        <p>Germany</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-birthday-cake"></i>
-                        <h3>Channel Started</h3>
-                        <p>April 21, 2022</p>
-                    </div>
-                    
-                    <div class="info-card">
-                        <i class="fas fa-heart"></i>
-                        <h3>Community</h3>
-                        <p>Character requests welcome!</p>
-                    </div>
+            <section class="social-media-section">
+                <div class="section-header">
+                    <h2>Follow Us</h2>
                 </div>
-            </div>
-        </section>
+                <div class="social-links-container">
+                    <a th:href="${socialLinks.youtube}" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                    <a th:href="${socialLinks.twitter}" class="social-link twitter" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+                    <a th:href="${socialLinks.instagram}" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a th:href="${socialLinks.facebook}" class="social-link facebook" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+                </div>
+            </section>
+        </main>
 
-        <!-- Social Media Section -->
-        <section class="social-section">
-            <div class="container">
-                <h2>Connect & Listen</h2>
-                <p>Follow me on social media for updates and behind-the-scenes content!</p>
-                <div class="social-links">
-                    <a th:href="${facebookUrl}" class="social-link facebook" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>Facebook</span>
-                    </a>
-                    <a th:href="${instagramUrl}" class="social-link instagram" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                    </a>
-                    <a th:href="${twitterUrl}" class="social-link twitter" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter</span>
-                    </a>
-                    <a th:href="${redditUrl}" class="social-link reddit" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-reddit-alien"></i>
-                        <span>Reddit</span>
-                    </a>
-                    <a th:href="${tiktokUrl}" class="social-link tiktok" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
-                    </a>
-                    <a th:href="${tumblrUrl}" class="social-link tumblr" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-tumblr"></i>
-                        <span>Tumblr</span>
-                    </a>
-                </div>
-            </div>
-        </section>
+        <footer class="footer">
+            <p>&copy; 2024 Random Videos 139. All rights reserved.</p>
+        </footer>
+    </div>
 
-        <!-- Call to Action -->
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Join the Community</h2>
-                    <p class="cta-description">Become part of our growing community of character music enthusiasts!</p>
-                    <div class="cta-buttons">
-                        <a th:href="${channelUrl}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-youtube"></i>
-                            Subscribe on YouTube
-                        </a>
-                        <a href="/all-videos" class="btn btn-secondary">
-                            <i class="fas fa-video"></i>
-                            Browse All Videos
-                        </a>
-                    </div>
-                    <p class="cta-subtitle">🎵 Daily uploads 🌟 Character requests welcome</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Random Videos 139</h3>
-                    <p>Creating unique AI character songs daily. Join our community of anime music enthusiasts!</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/latest-videos">Latest Videos</a></li>
-                        <li><a href="/popular-videos">Popular Videos</a></li>
-                        <li><a href="/playlists">Playlists</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4>Connect With Us</h4>
-                    <div class="social-links">
-                        <a th:href="${facebookUrl}" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a th:href="${instagramUrl}" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a th:href="${twitterUrl}" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a th:href="${redditUrl}" target="_blank"><i class="fab fa-reddit"></i></a>
-                        <a th:href="${tiktokUrl}" target="_blank"><i class="fab fa-tiktok"></i></a>
-                        <a th:href="${tumblrUrl}" target="_blank"><i class="fab fa-tumblr"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 Random Videos 139. All rights reserved. | AI Music Creator: Justin</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="/js/script.js"></script>
+    <script th:src="@{/js/script.js}"></script>
 </body>
 </html>
-
